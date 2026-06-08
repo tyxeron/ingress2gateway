@@ -50,6 +50,7 @@ To contribute a new provider support - please read [CONTRIBUTING.md](CONTRIBUTIN
 
 ### Supported Emitters
 * [standard](https://gateway-api.sigs.k8s.io/) (default)
+* [airlock-microgateway](https://www.airlock.com/microgateway)
 * [agentgateway](https://agentgateway.dev/)
 * [envoy-gateway](https://gateway.envoyproxy.io/)
 * [gce](https://docs.cloud.google.com/kubernetes-engine/docs/concepts/gateway-api)

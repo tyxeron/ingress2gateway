@@ -57,10 +57,11 @@ func TestEmit_Gateway(t *testing.T) {
 	if len(errs) != 0 {
 		t.Fatalf("unexpected errors: %v", errs)
 	}
-
-	if gw, ok := gr.Gateways[nn]; !ok {
+	gw, ok := gr.Gateways[nn]
+	if !ok {
 		t.Fatalf("missing gateway %s", nn)
-	} else if gw.Spec.GatewayClassName != emitterName {
+	}
+	if gw.Spec.GatewayClassName != emitterName {
 		t.Errorf("unexpected GatewayClassName %q", gw.Spec.GatewayClassName)
 	}
 }
@@ -159,7 +160,7 @@ func TestEmit_warnsAndDropsUnsupportedRoutes(t *testing.T) {
 	}
 }
 
-func TestEmit_ApplyRegularExpressionPathMatchFeature(t *testing.T) {
+func TestEmit_applyRegularExpressionPathMatchFeature(t *testing.T) {
 	gwName := types.NamespacedName{Namespace: "default", Name: "gw"}
 	routeName := types.NamespacedName{Namespace: "default", Name: "route"}
 	secondRouteName := types.NamespacedName{Namespace: "default", Name: "route2"}
@@ -190,10 +191,15 @@ func TestEmit_ApplyRegularExpressionPathMatchFeature(t *testing.T) {
 					routeName: {
 						ObjectMeta: metav1.ObjectMeta{Namespace: routeName.Namespace, Name: routeName.Name},
 						Spec: gatewayv1.HTTPRouteSpec{
-							CommonRouteSpec: gatewayv1.CommonRouteSpec{ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}}},
+							CommonRouteSpec: gatewayv1.CommonRouteSpec{
+								ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}},
+							},
 							Rules: []gatewayv1.HTTPRouteRule{{
 								Matches: []gatewayv1.HTTPRouteMatch{{
-									Path: &gatewayv1.HTTPPathMatch{Type: ptr.To(gatewayv1.PathMatchPathPrefix), Value: ptr.To("/")},
+									Path: &gatewayv1.HTTPPathMatch{
+										Type:  ptr.To(gatewayv1.PathMatchPathPrefix),
+										Value: ptr.To("/"),
+									},
 								}},
 							}},
 						},
@@ -213,10 +219,15 @@ func TestEmit_ApplyRegularExpressionPathMatchFeature(t *testing.T) {
 					routeName: {
 						ObjectMeta: metav1.ObjectMeta{Namespace: routeName.Namespace, Name: routeName.Name},
 						Spec: gatewayv1.HTTPRouteSpec{
-							CommonRouteSpec: gatewayv1.CommonRouteSpec{ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}}},
+							CommonRouteSpec: gatewayv1.CommonRouteSpec{
+								ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}},
+							},
 							Rules: []gatewayv1.HTTPRouteRule{{
 								Matches: []gatewayv1.HTTPRouteMatch{{
-									Path: &gatewayv1.HTTPPathMatch{Type: ptr.To(gatewayv1.PathMatchRegularExpression), Value: ptr.To("/")},
+									Path: &gatewayv1.HTTPPathMatch{
+										Type:  ptr.To(gatewayv1.PathMatchRegularExpression),
+										Value: ptr.To("/"),
+									},
 								}},
 							}},
 						},
@@ -240,10 +251,15 @@ func TestEmit_ApplyRegularExpressionPathMatchFeature(t *testing.T) {
 					routeName: {
 						ObjectMeta: metav1.ObjectMeta{Namespace: routeName.Namespace, Name: routeName.Name},
 						Spec: gatewayv1.HTTPRouteSpec{
-							CommonRouteSpec: gatewayv1.CommonRouteSpec{ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}}},
+							CommonRouteSpec: gatewayv1.CommonRouteSpec{
+								ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}},
+							},
 							Rules: []gatewayv1.HTTPRouteRule{{
 								Matches: []gatewayv1.HTTPRouteMatch{{
-									Path: &gatewayv1.HTTPPathMatch{Type: ptr.To(gatewayv1.PathMatchRegularExpression), Value: ptr.To("/")},
+									Path: &gatewayv1.HTTPPathMatch{
+										Type:  ptr.To(gatewayv1.PathMatchRegularExpression),
+										Value: ptr.To("/"),
+									},
 								}},
 							}},
 						},
@@ -251,10 +267,15 @@ func TestEmit_ApplyRegularExpressionPathMatchFeature(t *testing.T) {
 					secondRouteName: {
 						ObjectMeta: metav1.ObjectMeta{Namespace: secondRouteName.Namespace, Name: secondRouteName.Name},
 						Spec: gatewayv1.HTTPRouteSpec{
-							CommonRouteSpec: gatewayv1.CommonRouteSpec{ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}}},
+							CommonRouteSpec: gatewayv1.CommonRouteSpec{
+								ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}},
+							},
 							Rules: []gatewayv1.HTTPRouteRule{{
 								Matches: []gatewayv1.HTTPRouteMatch{{
-									Path: &gatewayv1.HTTPPathMatch{Type: ptr.To(gatewayv1.PathMatchRegularExpression), Value: ptr.To("/")},
+									Path: &gatewayv1.HTTPPathMatch{
+										Type:  ptr.To(gatewayv1.PathMatchRegularExpression),
+										Value: ptr.To("/"),
+									},
 								}},
 							}},
 						},
@@ -281,10 +302,15 @@ func TestEmit_ApplyRegularExpressionPathMatchFeature(t *testing.T) {
 					routeName: {
 						ObjectMeta: metav1.ObjectMeta{Namespace: routeName.Namespace, Name: routeName.Name},
 						Spec: gatewayv1.HTTPRouteSpec{
-							CommonRouteSpec: gatewayv1.CommonRouteSpec{ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}}},
+							CommonRouteSpec: gatewayv1.CommonRouteSpec{
+								ParentRefs: []gatewayv1.ParentReference{{Name: gatewayv1.ObjectName(gwName.Name)}},
+							},
 							Rules: []gatewayv1.HTTPRouteRule{{
 								Matches: []gatewayv1.HTTPRouteMatch{{
-									Path: &gatewayv1.HTTPPathMatch{Type: ptr.To(gatewayv1.PathMatchRegularExpression), Value: ptr.To("/")},
+									Path: &gatewayv1.HTTPPathMatch{
+										Type:  ptr.To(gatewayv1.PathMatchRegularExpression),
+										Value: ptr.To("/"),
+									},
 								}},
 							}},
 						},
